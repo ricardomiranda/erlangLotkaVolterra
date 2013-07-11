@@ -88,12 +88,13 @@ loop(PreyID,
         io:format("Predators population is: ~w. ~n", [Predators_Population#population.population_size]),
 
         PreyID !      {self(), Prey_Population, Predators_Population, Delta_T},
-        PredatorsID ! {self(), Prey_Population, Predators_Population, Delta_T},
 
         receive
             New_Prey_Population ->      New_Prey_Population
         end,
         
+        PredatorsID ! {self(), Prey_Population, Predators_Population, Delta_T},
+
         receive
             New_Predators_Population -> New_Predators_Population
         end,
