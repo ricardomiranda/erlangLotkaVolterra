@@ -19,8 +19,8 @@ population(#population{} = Prey_Population,
            #population{} = Predators_Population, 
            Delta_T) -> 
     New_Prey_Population_Size = birth(Prey_Population, Delta_T)
-                               + destroy(Prey_Population, Predators_Population, Delta_T) 
-                               + Prey_Population#population.population_size,
+                             + destroy(Prey_Population, Predators_Population, Delta_T) 
+                             + Prey_Population#population.population_size,
     
     Prey_Population#population{population_size = New_Prey_Population_Size}.
 

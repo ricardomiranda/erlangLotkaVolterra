@@ -6,10 +6,8 @@
 
 
 -module(lotkaVolterra_app).
-%-behaviour(application).
 -include("records.hrl").
 -export([calc_populations/0]).
-%-export([start/2, stop/1]).
 
 get_Delta_T() -> 
     Input = io:get_line("What is the time step? > "),
@@ -60,10 +58,10 @@ calc_populations() ->
     Ini_Prey_Population      = get_Ini_Prey_Population(),
     Ini_Predators_Population = get_Ini_Predators_Population(),
         
-    Prey_Birth_Rate         = get_Prey_Birth_Rate(),
-    Prey_Destroy_Rate       = get_Prey_Destroy_Rate(),
-    Predators_Death_Rate    = get_Predators_Death_Rate(),
-    Predators_Increase_Rate = get_Predators_Increase_Rate(),
+    Prey_Birth_Rate          = get_Prey_Birth_Rate(),
+    Prey_Destroy_Rate        = get_Prey_Destroy_Rate(),
+    Predators_Death_Rate     = get_Predators_Death_Rate(),
+    Predators_Increase_Rate  = get_Predators_Increase_Rate(),
 
     Prey_Population      = #population{population_size = Ini_Prey_Population,
                                        increase_rate   = Prey_Birth_Rate,
@@ -90,11 +88,12 @@ loop(PreyID,
         io:format("Predators population is: ~w. ~n", [Predators_Population#population.population_size]),
 
         PreyID !      {self(), Prey_Population, Predators_Population, Delta_T},
+        PredatorsID ! {self(), Prey_Population, Predators_Population, Delta_T},
+
         receive
             New_Prey_Population ->      New_Prey_Population
         end,
         
-        PredatorsID ! {self(), Prey_Population, Predators_Population, Delta_T},
         receive
             New_Predators_Population -> New_Predators_Population
         end,
@@ -107,11 +106,3 @@ loop(PreyID,
 
 loop(_, _, _, _, _, Nbr_steps) when Nbr_steps =< 0.0 -> io:format("Simulation terminated successfully.~n").
 
-%-------------------------------------------------------------------------------
-
-%start(_Type, _StartArgs) ->
-%    prey:start_link(),
-%    calc_populations().
-
-%stop(_State) ->
-%    ok.

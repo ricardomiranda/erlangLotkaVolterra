@@ -18,7 +18,7 @@ increase(#population{} = Prey_P,
 population(#population{} = Prey_Population,
            #population{} = Predators_Population, 
            Delta_T) -> 
-    New_Predators_Population_Size = death(Prey_Population, Delta_T) 
+    New_Predators_Population_Size = death(Predators_Population, Delta_T) 
                                   + increase(Prey_Population, Predators_Population, Delta_T) 
                                   + Predators_Population#population.population_size,
                                   
